@@ -3,6 +3,8 @@ package org.example;
 import io.restassured.response.Response;
 import org.hamcrest.MatcherAssert;
 
+import java.io.File;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
@@ -16,7 +18,6 @@ public class SupportClass {
 //        Response response =
 //                given()
 //                        .header("Content-type", "application/json")
-//                        .and()
 //                        .body(json)
 //                        .when()
 //                        .post("/api/v1/courier/login");
@@ -28,10 +29,10 @@ public class SupportClass {
 
     // Достаём id курьера и передаём далее
     public int getLoginCourier() {
-        String json = "src/main/resources/loginCourierBody.json ";
+        File json = new File("src/main/resources/loginCourierBody.json");
 
         Courier courier = given()
-                .and()
+                .header("Content-type", "application/json")
                 .body(json)
                 .when()
                 .post("/api/v1/courier/login")
@@ -47,14 +48,12 @@ public class SupportClass {
         // Получаем id курьера
         int idCourier = getLoginCourier();
 
-        String json = "src/main/resources/loginCourierBody.json "+ idCourier +"";
-
         // удаляем курьера
         Response response =
                 given()
                         .header("Content-type", "application/json")
                         .when()
-                        .delete("/api/v1/courier/");
+                        .delete("/api/v1/courier/{id}", idCourier);
         response.then().statusCode(200);
         System.out.println(response.body().asString());
     }
