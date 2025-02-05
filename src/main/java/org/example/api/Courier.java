@@ -1,4 +1,4 @@
-package org.example;
+package org.example.api;
 
 // Класс для десериализации получения id курьера
 public class Courier {
