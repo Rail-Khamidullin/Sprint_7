@@ -1,4 +1,4 @@
-package org.example;
+package org.example.courier;
 
 public class CourierJSON {
 
@@ -8,13 +8,13 @@ public class CourierJSON {
 
     public CourierJSON(String login, String password, String firstName) {
         this.firstName = firstName;
-        this.password = password;
-        this.login = login;
+        this.password  = password;
+        this.login     = login;
     }
 
     public CourierJSON(String login, String password) {
         this.password = password;
-        this.login = login;
+        this.login    = login;
     }
 
     public String getFirstName() {

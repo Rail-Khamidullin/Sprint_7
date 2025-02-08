@@ -1,18 +1,30 @@
-package org.example;
-
-import java.util.ArrayList;
+package org.example.order;
 
 public class OrderJSON {
 
     private String firstName;
     private String lastName;
     private String address;
-    private String metroStation;
+    private int metroStation;
     private String phone;
-    private String rentTime;
+    private int rentTime;
     private String deliveryDate;
     private String comment;
-    private ArrayList<String> color;
+    private String[] color;
+
+    public OrderJSON(String firstName,    String lastName, String address,
+                     int metroStation,    String phone,    int rentTime,
+                     String deliveryDate, String comment,  String[] color) {
+        this.firstName    = firstName;
+        this.lastName     = lastName;
+        this.address      = address;
+        this.metroStation = metroStation;
+        this.phone        = phone;
+        this.rentTime     = rentTime;
+        this.deliveryDate = deliveryDate;
+        this.comment      = comment;
+        this.color        = color;
+    }
 
     public String getFirstName() {
         return firstName;
@@ -38,11 +50,11 @@ public class OrderJSON {
         this.address = address;
     }
 
-    public String getMetroStation() {
+    public int getMetroStation() {
         return metroStation;
     }
 
-    public void setMetroStation(String metroStation) {
+    public void setMetroStation(int metroStation) {
         this.metroStation = metroStation;
     }
 
@@ -54,11 +66,11 @@ public class OrderJSON {
         this.phone = phone;
     }
 
-    public String getRentTime() {
+    public int getRentTime() {
         return rentTime;
     }
 
-    public void setRentTime(String rentTime) {
+    public void setRentTime(int rentTime) {
         this.rentTime = rentTime;
     }
 
@@ -78,11 +90,11 @@ public class OrderJSON {
         this.comment = comment;
     }
 
-    public ArrayList<String> getColor() {
+    public String[] getColor() {
         return color;
     }
 
-    public void setColor(ArrayList<String> color) {
+    public void setColor(String[] color) {
         this.color = color;
     }
 }

@@ -4,27 +4,29 @@ import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.example.CourierJSON;
-import org.example.SupportCourierMethods;
+import org.example.courier.CourierJSON;
+import org.example.courier.SupportCourierCourierMethods;
 import org.junit.*;
+import static org.example.Constants.SAMOKAT_URL;
 
+// Логин курьера
 public class CourierLoginTest {
 
     // Создаём экземпляр класса с телом запроса
     CourierJSON courierJSON;
     // Экземпляр класса с методами по курьеру
-    SupportCourierMethods supportCourierMethods = new SupportCourierMethods();
+    SupportCourierCourierMethods supportCourierMethods = new SupportCourierCourierMethods();
 
     // Повторяющуюся для разных ручек часть URL лучше записать в переменную в методе Before
     @Before
     public void setUp() {
         // если в классе будет несколько тестов, указывать её придётся только один раз
-        RestAssured.baseURI = "https://qa-scooter.praktikum-services.ru";
+        RestAssured.baseURI = SAMOKAT_URL;
     }
 
     // Достаём id курьера
     @Test
-    @DisplayName("Авторизация валдиного курьера") // имя теста
+    @DisplayName("Авторизация валидиного курьера") // имя теста
     @Description("Авторизация существующего курьера (позитивный сценарий)") // описание теста
     public void getLoginCourier() {
         // Отправляем запрос на создание курьера

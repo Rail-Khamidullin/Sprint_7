@@ -1,4 +1,4 @@
-package org.example;
+package org.example.courier;
 
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
@@ -8,10 +8,10 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
-public class SupportCourierMethods implements Support {
+public class SupportCourierCourierMethods implements SupportCourier {
 
     // Создаём экземпляр класса с телом запроса
-    private  CourierJSON courierJSON;
+    private CourierJSON courierJSON;
     // Устанавливаем необходимые значения тела
     public void setCourierBody(CourierJSON courierJSON) { this.courierJSON = courierJSON; }
 
