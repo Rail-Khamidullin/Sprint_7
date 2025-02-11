@@ -3,12 +3,13 @@ package org.example.courier;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import org.example.api.Courier;
+import org.example.api.CourierJSON;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
-public class SupportCourierCourierMethods implements SupportCourier {
+public class SupportCourierMethods implements SupportCourier {
 
     // Создаём экземпляр класса с телом запроса
     private CourierJSON courierJSON;

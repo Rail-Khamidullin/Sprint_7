@@ -1,4 +1,4 @@
-package org.example.courier;
+package org.example.api;
 
 public class CourierJSON {
 

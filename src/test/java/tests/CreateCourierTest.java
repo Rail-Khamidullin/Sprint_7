@@ -4,8 +4,8 @@ import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.example.courier.CourierJSON;
-import org.example.courier.SupportCourierCourierMethods;
+import org.example.api.CourierJSON;
+import org.example.courier.SupportCourierMethods;
 import org.junit.*;
 import org.junit.runners.MethodSorters;
 import static org.example.Constants.SAMOKAT_URL;
@@ -15,7 +15,7 @@ import static org.example.Constants.SAMOKAT_URL;
 public class CreateCourierTest {
 
     // Экземпляр класса с методами по курьеру
-    SupportCourierCourierMethods supportCourierMethods = new SupportCourierCourierMethods();
+    private SupportCourierMethods supportCourierMethods = new SupportCourierMethods();
 
     // Повторяющуюся для разных ручек часть URL лучше записать в переменную в методе Before
     @Before

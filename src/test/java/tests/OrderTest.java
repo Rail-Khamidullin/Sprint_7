@@ -4,7 +4,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.example.order.OrderJSON;
+import org.example.api.OrderJSON;
 import org.example.order.SupportOrderMethods;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,7 +60,10 @@ public class OrderTest {
                 metroStation, phone,    rentTime,
                 deliveryDate, comment,  color));
         Response response = supportOrderMethods.сreateOrder();
+        // Получаем ответ с номером заказа и статус кодом 201
         supportOrderMethods.createOrderResponse(response);
         System.out.println(Arrays.toString(color));
+        // Удаление созданного заказа
+        supportOrderMethods.cancelOrder(response);
     }
 }

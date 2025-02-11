@@ -4,8 +4,8 @@ import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.example.courier.CourierJSON;
-import org.example.courier.SupportCourierCourierMethods;
+import org.example.api.CourierJSON;
+import org.example.courier.SupportCourierMethods;
 import org.junit.*;
 import static org.example.Constants.SAMOKAT_URL;
 
@@ -15,7 +15,7 @@ public class CourierLoginTest {
     // Создаём экземпляр класса с телом запроса
     CourierJSON courierJSON;
     // Экземпляр класса с методами по курьеру
-    SupportCourierCourierMethods supportCourierMethods = new SupportCourierCourierMethods();
+    SupportCourierMethods supportCourierMethods = new SupportCourierMethods();
 
     // Повторяющуюся для разных ручек часть URL лучше записать в переменную в методе Before
     @Before
@@ -59,7 +59,7 @@ public class CourierLoginTest {
     // Достаём id не существующего курьера
     @Test
     @DisplayName("Авторизация не существующего курьера") // имя теста
-    @Description("олучение текста 'Учетная запись не найдена' (негативный сценарий)") // описание теста
+    @Description("Получение текста 'Учетная запись не найдена' (негативный сценарий)") // описание теста
     public void getLoginCourierWithBugOnBody() {
         courierJSON = new CourierJSON("Rail63", "1112");
         Response response = supportCourierMethods.getLoginCourier();

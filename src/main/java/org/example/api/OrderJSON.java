@@ -1,4 +1,4 @@
-package org.example.order;
+package org.example.api;
 
 public class OrderJSON {
 
