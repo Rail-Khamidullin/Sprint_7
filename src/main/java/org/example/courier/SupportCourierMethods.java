@@ -4,19 +4,21 @@ import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import org.example.api.Courier;
 import org.example.api.CourierJSON;
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class SupportCourierMethods implements SupportCourier {
 
+    // API курьера
+    public static final String API_COURIER       = "/api/v1/courier";
+    public static final String API_COURIER_LOGIN = "/api/v1/courier/login";
+
     // Создаём экземпляр класса с телом запроса
     private CourierJSON courierJSON;
     // Устанавливаем необходимые значения тела
     public void setCourierBody(CourierJSON courierJSON) { this.courierJSON = courierJSON; }
 
-    /// Создание курьера
     @Step("Создание курьера")
     public Response сreateCourier() {
         Response response = given()
@@ -24,18 +26,17 @@ public class SupportCourierMethods implements SupportCourier {
                 .log().all()
                 .body(courierJSON)
                 .when()
-                .post("/api/v1/courier");
+                .post(API_COURIER);
         return response;
     }
 
-    // Получаем ожидаемый ответ {"ok":true}" и статус кода 201
-    @Step("Получаем ответ true and статус код 201")
+    @Step("Получаем ответ true и статус код 201")
     public void getCreateResponseTrue(Response response) {
         response.then().assertThat().body("ok",equalTo(true)).statusCode(201);
     }
 
     // Шаг для создания курьера с недостатком данных
-    @Step("Get a response with text 'Недостаточно данных для создания учетной записи' and status 400")
+    @Step("Получаем ответ с текстом 'Недостаточно данных для создания учетной записи' и статус код 400")
     public void getResponseMessageWithoutData(Response response) {
         response.then().assertThat().body("message",equalTo("Недостаточно данных для создания учетной записи")).statusCode(400);
     }
@@ -46,7 +47,6 @@ public class SupportCourierMethods implements SupportCourier {
         response.then().assertThat().body("message", equalTo("Этот логин уже используется")).statusCode(409);
     }
 
-    /// Достаём id курьера и передаём далее
     @Step("Отправляем запрос на получение ID курьера")
     public Response getLoginCourier() {
         Response response = given()
@@ -54,7 +54,7 @@ public class SupportCourierMethods implements SupportCourier {
                 .log().all()
                 .body(courierJSON)
                 .when()
-                .post("/api/v1/courier/login");
+                .post(API_COURIER_LOGIN);
         return response;
     }
 
@@ -75,18 +75,22 @@ public class SupportCourierMethods implements SupportCourier {
 
     // Удаляем курьера из БД
     public void deleteCourier() {
-        // Получаем id курьера
-        Integer idCourier = getLoginCourier().body().as(Courier.class).getId();
 
-        if (idCourier != null) {
+        Integer idCourier = getLoginCourier().body().as(Courier.class).getId();
+        if (idCourier > 0 ) {
             // Удаляем курьера
             Response response = given()
                     .header("Content-type", "application/json")
                     .log().all()
+                    .pathParam("id", idCourier)
                     .when()
-                    .delete("/api/v1/courier/{id}", idCourier);
+                    .delete(API_COURIER +"/{id}");
             response.then().statusCode(200);
-            System.out.println(response.body().asString());
+            // Логируем ответ
+            System.out.println("Delete Response: " + response.body().asString());
+            response.then().statusCode(200); // Проверяем статус код
+        } else {
+            System.out.println("Courier is null!");
         }
     }
 }

@@ -3,15 +3,16 @@ package org.example.order;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import org.example.api.*;
-import org.example.courier.SupportCourierMethods;
-
-
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.notNullValue;
 
 public class SupportOrderMethods implements SupportOrder {
 
-    private SupportCourierMethods supportCourierMethods = new SupportCourierMethods();
+    // API заказа
+    public static final String API_ORDERS        = "/api/v1/orders";
+    public static final String API_ORDERS_TRACK  = "/api/v1/orders/track";
+    public static final String API_ORDERS_ACCEPT = "/api/v1/orders/accept";
+    public static final String API_ORDERS_CANCEL = "/api/v1/orders/cancel";
 
     // Тело запроса заказа
     public OrderJSON orderJSON;
@@ -19,7 +20,6 @@ public class SupportOrderMethods implements SupportOrder {
     // Заполнить тело запроса заказа
     public void setOrderBody(OrderJSON orderJSON) { this.orderJSON = orderJSON; }
 
-    /// Создание заказа
     @Step("Создание заказа")
     public Response сreateOrder() {
 
@@ -28,7 +28,7 @@ public class SupportOrderMethods implements SupportOrder {
                 .log().all()
                 .body(orderJSON)
                 .when()
-                .post("/api/v1/orders");
+                .post(API_ORDERS);
         return response;
     }
 
@@ -39,47 +39,45 @@ public class SupportOrderMethods implements SupportOrder {
 
     @Step("Получение заказа по трек номеру")
     public Response getIDOrder(Response response) {
-
+        // Достаём трек номер заказа
         Integer track = response.body().as(Track.class).getTrack();
 
         Response responseWithTrack = given()
                 .log().all()
+                .queryParam("t", track)
                 .when()
-                .get("/api/v1/orders/track?t={track}", track);
+                .get(API_ORDERS_TRACK);
         return responseWithTrack;
     }
 
     @Step("Курьер принимает заказ по ID номеру")
     public void getAcceptOrder(Response iDCourier, Response idOrderCourier) {
-
         // Получаем ID курьера
         Integer idCourier = iDCourier.body().as(Courier.class).getId();
         // Достаём ID заказа
-        Order idOrder = idOrderCourier.body().as(Order.class);
-        Integer id = idOrder.getId();
-
-        System.out.println(idOrderCourier.body().asString());
-        System.out.println("ID заказа = " + idOrder);
-        System.out.println("Имя = " + idOrder.getFirstName());
+        Integer idOrder = idOrderCourier.body().as(Root.class).order.getId();
 
         given()
                 .log().all()
-                .pathParams("courierId", idCourier)
-                .pathParams("id",idOrder)
+                .queryParam("courierId", idCourier)
+                .pathParams("id", idOrder)
                 .when()
-                .put("/api/v1/orders/accept/:{id}?courierId={courierId}");
+                .put(API_ORDERS_ACCEPT + "/{id}");
     }
 
-    /// Получить список заказов
     @Step("Курьер получает список заказов по своему ID")
-    public Response getOrderList() {
+    public Response getOrderList(Response responseLogin) {
         // Получаем ID курьера
-        Integer idCourier = supportCourierMethods.getLoginCourier().body().as(Courier.class).getId();
+        Integer idCourier = responseLogin.body().as(Courier.class).getId();
 
         Response response = given()
                 .log().all()
+                .queryParam("courierId", idCourier)
+                .queryParam("nearestStation", 2)
+                .queryParam("limit", 30)
+                .queryParam("page", 0)
                 .when()
-                .get("/api/v1/orders?courierId={id}&nearestStation=2&limit=30&page=0", idCourier);
+                .get(API_ORDERS);
         return response;
     }
 
@@ -91,16 +89,17 @@ public class SupportOrderMethods implements SupportOrder {
         System.out.println(response.body().asString());
     }
 
-    @Step("Запрос на отмену заказа")
+    @Step("Запрос на отмену заказа по трек номеру заказа")
     public void cancelOrder(Response response) {
+        // Достаём трек номер заказа
         int track = response.body().as(CancelJSON.class).getTrack();
 
         given()
                 .header("Content-type", "application/json")
                 .log().all()
+                .queryParam("track", track)
                 .when()
-                .put("/api/v1/orders/cancel?track={track}", track);
-
+                .put(API_ORDERS_CANCEL);
         System.out.println(track);
     }
 }

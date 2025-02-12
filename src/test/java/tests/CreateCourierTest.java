@@ -15,7 +15,7 @@ import static org.example.Constants.SAMOKAT_URL;
 public class CreateCourierTest {
 
     // Экземпляр класса с методами по курьеру
-    private SupportCourierMethods supportCourierMethods = new SupportCourierMethods();
+     final SupportCourierMethods supportCourierMethods = new SupportCourierMethods();
 
     // Повторяющуюся для разных ручек часть URL лучше записать в переменную в методе Before
     @Before
@@ -42,7 +42,7 @@ public class CreateCourierTest {
     @Description("Создание курьера без логина (негативный сценарий)") // описание теста
     public void b_CreateCourierWithoutLogin() {
         // Указываем тело запроса
-        supportCourierMethods.setCourierBody(new CourierJSON(null, "1111", "saske"));
+        supportCourierMethods.setCourierBody(new CourierJSON("", "1111", "saske"));
         // Отправляем запрос на создание
         Response response = supportCourierMethods.сreateCourier();
         // Достаём необхадимую информацию
@@ -62,11 +62,13 @@ public class CreateCourierTest {
         Response response = supportCourierMethods.сreateCourier();
         // Достаём необхадимую информацию
         supportCourierMethods.getResponseDoubleCourier(response);
+        supportCourierMethods.deleteCourier();
     }
 
     // Удаление ранее созданных тестовых данных
     @After
     public void afterClass() throws Exception {
+        // Удаление ранее созданных тестовых данных
         supportCourierMethods.deleteCourier();
     }
 }

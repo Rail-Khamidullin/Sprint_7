@@ -8,14 +8,13 @@ import org.example.api.CourierJSON;
 import org.example.courier.SupportCourierMethods;
 import org.junit.*;
 import static org.example.Constants.SAMOKAT_URL;
+import static org.hamcrest.CoreMatchers.equalTo;
 
 // Логин курьера
 public class CourierLoginTest {
 
-    // Создаём экземпляр класса с телом запроса
-    CourierJSON courierJSON;
     // Экземпляр класса с методами по курьеру
-    SupportCourierMethods supportCourierMethods = new SupportCourierMethods();
+    final SupportCourierMethods supportCourierMethods = new SupportCourierMethods();
 
     // Повторяющуюся для разных ручек часть URL лучше записать в переменную в методе Before
     @Before
@@ -61,7 +60,7 @@ public class CourierLoginTest {
     @DisplayName("Авторизация не существующего курьера") // имя теста
     @Description("Получение текста 'Учетная запись не найдена' (негативный сценарий)") // описание теста
     public void getLoginCourierWithBugOnBody() {
-        courierJSON = new CourierJSON("Rail63", "1112");
+        supportCourierMethods.setCourierBody(new CourierJSON("AbraCadabra63jhgh", "1111"));
         Response response = supportCourierMethods.getLoginCourier();
         supportCourierMethods.getLoginCourierWithBugID(response);
     }
