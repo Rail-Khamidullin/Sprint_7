@@ -32,19 +32,19 @@ public class SupportCourierMethods implements SupportCourier {
 
     @Step("Получаем ответ true и статус код 201")
     public void getCreateResponseTrue(Response response) {
-        response.then().assertThat().body("ok",equalTo(true)).statusCode(201);
+        response.then().assertThat().statusCode(201).body("ok",equalTo(true));
     }
 
     // Шаг для создания курьера с недостатком данных
     @Step("Получаем ответ с текстом 'Недостаточно данных для создания учетной записи' и статус код 400")
     public void getResponseMessageWithoutData(Response response) {
-        response.then().assertThat().body("message",equalTo("Недостаточно данных для создания учетной записи")).statusCode(400);
+        response.then().assertThat().statusCode(400).body("message",equalTo("Недостаточно данных для создания учетной записи"));
     }
 
     // Шаг для создания дубля
     @Step("Получаем ошибку на создание дубля с текстом 'Этот логин уже используется' и статус 409")
     public void getResponseDoubleCourier(Response response) {
-        response.then().assertThat().body("message", equalTo("Этот логин уже используется")).statusCode(409);
+        response.then().assertThat().statusCode(409).body("message", equalTo("Этот логин уже используется"));
     }
 
     @Step("Отправляем запрос на получение ID курьера")
@@ -65,12 +65,12 @@ public class SupportCourierMethods implements SupportCourier {
 
     @Step("Получаем ошибку если в теле отсутствует логин или пароль")
     public void getLoginCourierNotFullBody(Response response) {
-        response.then().assertThat().body("message", equalTo("Недостаточно данных для входа")).statusCode(400);
+        response.then().assertThat().statusCode(400).body("message", equalTo("Недостаточно данных для входа"));
     }
 
     @Step("Получаем ошибку если в теле ID не существующий курьер")
     public void getLoginCourierWithBugID(Response response) {
-        response.then().assertThat().body("message",equalTo("Учетная запись не найдена")).statusCode(404);
+        response.then().assertThat().statusCode(404).body("message",equalTo("Учетная запись не найдена"));
     }
 
     // Удаляем курьера из БД
@@ -85,10 +85,9 @@ public class SupportCourierMethods implements SupportCourier {
                     .pathParam("id", idCourier)
                     .when()
                     .delete(API_COURIER +"/{id}");
-            response.then().statusCode(200);
+            response.then().statusCode(200); // Проверяем статус код
             // Логируем ответ
             System.out.println("Delete Response: " + response.body().asString());
-            response.then().statusCode(200); // Проверяем статус код
         } else {
             System.out.println("Courier is null!");
         }

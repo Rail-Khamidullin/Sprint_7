@@ -2,26 +2,21 @@ package tests;
 
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.example.api.CourierJSON;
 import org.example.courier.SupportCourierMethods;
 import org.junit.*;
-import static org.example.Constants.SAMOKAT_URL;
-import static org.hamcrest.CoreMatchers.equalTo;
+
 
 // Логин курьера
-public class CourierLoginTest {
+public class CourierLoginTest extends BaseTest {
 
     // Экземпляр класса с методами по курьеру
     final SupportCourierMethods supportCourierMethods = new SupportCourierMethods();
 
     // Повторяющуюся для разных ручек часть URL лучше записать в переменную в методе Before
-    @Before
-    public void setUp() {
-        // если в классе будет несколько тестов, указывать её придётся только один раз
-        RestAssured.baseURI = SAMOKAT_URL;
-    }
+    @Override
+    public void setUp() { super.setUp(); }
 
     // Достаём id курьера
     @Test
@@ -66,7 +61,7 @@ public class CourierLoginTest {
     }
 
     // Удаление ранее созданных тестовых данных
-    @After
+    @Override
     public void afterClass() throws Exception {
         supportCourierMethods.deleteCourier();
     }

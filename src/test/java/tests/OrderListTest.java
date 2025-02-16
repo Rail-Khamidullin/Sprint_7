@@ -2,28 +2,22 @@ package tests;
 
 import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import org.example.api.Courier;
 import org.example.api.CourierJSON;
 import org.example.courier.SupportCourierMethods;
 import org.example.api.OrderJSON;
 import org.example.order.SupportOrderMethods;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
-import static io.restassured.RestAssured.given;
-import static org.example.Constants.SAMOKAT_URL;
 
-public class OrderListTest {
+public class OrderListTest extends BaseTest {
 
     private SupportOrderMethods supportOrderMethods = new SupportOrderMethods();
     private SupportCourierMethods supportCourierMethods = new SupportCourierMethods();
 
     // Повторяющуюся для разных ручек часть URL лучше записать в переменную в методе Before
-    @Before
-    public void setUp() { RestAssured.baseURI = SAMOKAT_URL; }
+    @Override
+    public void setUp() { super.setUp(); }
 
     @Test
     @DisplayName("Лист заказов")
@@ -54,7 +48,7 @@ public class OrderListTest {
 }
 
     // Удаление ранее созданного курьера
-    @After
+    @Override
     public void afterClass() throws Exception {
         supportCourierMethods.deleteCourier();
     }

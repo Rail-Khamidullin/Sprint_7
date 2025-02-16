@@ -34,7 +34,7 @@ public class SupportOrderMethods implements SupportOrder {
 
     @Step("Получаем ответ с номером заказа и статус кодом 201")
     public void createOrderResponse(Response response) {
-        response.then().assertThat().body("track", notNullValue()).statusCode(201);
+        response.then().assertThat().statusCode(201).body("track", notNullValue());
     }
 
     @Step("Получение заказа по трек номеру")
@@ -83,10 +83,7 @@ public class SupportOrderMethods implements SupportOrder {
 
     @Step("Проверяем, что список не пустой и статус код 200")
     public void checkOrderList(Response response) {
-        response.then().assertThat()
-                .body("orders", notNullValue())
-                .statusCode(200);
-        System.out.println(response.body().asString());
+        response.then().assertThat().statusCode(200).body("orders", notNullValue());
     }
 
     @Step("Запрос на отмену заказа по трек номеру заказа")
